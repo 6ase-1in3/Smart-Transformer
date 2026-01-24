@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Transformer Feedback Survey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Noto+Sans+TC:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --bg-page: #f8fafc;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+            background: var(--bg-page);
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .survey-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.25rem;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 600px;
+            min-height: 520px;
+            /* 固定高度 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            font-weight: 700;
+            transition: all 0.2s;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            border-color: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            border: 2px solid #e2e8f0;
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 12px;
+            background: #f1f5f9;
+            border-radius: 999px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            border: 4px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            border: 2px solid #f1f5f9;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            resize: none;
+            height: 120px;
+            transition: border-color 0.2s;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .lang-btn {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 2px solid transparent;
+        }
+
+        .lang-btn.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #eef2ff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="survey-app" class="survey-card p-8 md:p-10 relative">
+        <!-- Lang Toggle -->
+        <div class="absolute top-4 right-4 flex space-x-1">
+            <button class="lang-btn active" onclick="setLang('zh')">ZH</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" onclick="setLang('jp')">JP</button>
+        </div>
+
+        <!-- Pages -->
+        <div id="page-start" class="flex-grow flex flex-col justify-center text-center">
+            <div class="mb-6 inline-block mx-auto">
+                <div class="p-4 bg-indigo-100 rounded-full">
+                    <i class="fas fa-magic text-4xl text-indigo-600"></i>
+                </div>
+            </div>
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-4 t-headline">Smart Transformer</h1>
+            <p class="text-slate-600 text-lg mb-8 t-subline">您的回饋將協助我們開發出更好的工具。</p>
+            <button onclick="changePage('survey')" class="btn-primary self-center px-12 t-start-btn">開始填寫</button>
+        </div>
+
+        <div id="page-survey" class="hidden flex-grow flex flex-col">
+            <div class="mb-8">
+                <span id="progress-text" class="text-indigo-600 font-bold tracking-widest text-sm">STEP 1 / 10</span>
+                <div class="w-full h-2 bg-slate-100 rounded-full mt-2">
+                    <div id="progress-bar" class="h-full bg-indigo-600 rounded-full transition-all duration-300"
+                        style="width: 10%"></div>
+                </div>
+            </div>
+
+            <div id="question-container" class="flex-grow">
+                <!-- Injected via JS -->
+            </div>
+
+            <div class="mt-8 flex justify-between items-center">
+                <button id="btn-prev" onclick="prevStep()" class="btn-outline hidden t-prev">上一步</button>
+                <button id="btn-next" onclick="nextStep()" class="btn-primary ml-auto t-next">下一步</button>
+            </div>
+        </div>
+
+        <div id="page-submitting" class="hidden flex-grow flex flex-col items-center justify-center text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent mb-4"></div>
+            <p class="text-xl font-bold t-submitting">提交中...</p>
+        </div>
+
+        <div id="page-success" class="hidden flex-grow flex flex-col items-center justify-center text-center">
+            <i class="fas fa-check-circle text-6xl text-emerald-500 mb-6"></i>
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-2 t-success-title">感謝您的參與！</h2>
+            <p class="text-slate-600 t-success-body">您的建議我們收到了。</p>
+            <button onclick="location.reload()" class="mt-8 btn-outline t-restart">重新填寫</button>
+        </div>
+    </div>
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbyrZcI8x0alC61Pa8dvwA1Oqlk9Av6NAsNITvaiCRfkRW-iooVqJfoZJrKWSk78abJRXA/exec";
+
+        const i18n = {
+            zh: {
+                headline: "Smart Transformer<br><span class='text-indigo-600'>使用者回饋問卷</span>",
+                subline: "此問卷蒐集您的反饋協助開發者優化工具",
+                startBtn: "開始填寫",
+                prev: "上一步",
+                next: "下一步",
+                submit: "提交問卷",
+                submitting: "提交中，請稍候...",
+                successTitle: "感謝您的回饋！",
+                successBody: "祝您使用愉快",
+                restart: "再次填寫",
+                q_text: "我有話要說！",
+                donate_placeholder: "Donate!",
+                difficult: "困難",
+                perfect: "流暢",
+                questions: [
+                    "1. 請問安裝上是否順利?",
+                    "2. 請問第一次開啟檔案, 是否順利?",
+                    "3. 請問依照說明執行設定API是否順利?",
+                    "4. 請問依照說明新增Prompt是否順利?",
+                    "5. 請問依照說明操作F9功能是否順利?",
+                    "6. 請問程式執行是否符合整體的使用直覺?",
+                    "7. 請問介面按鈕是否符合您的審美?",
+                    "8. 請問你有勾選開機自動執行嗎?",
+                    "9. 請問你願意花多少錢在這個小工具上?",
+                    "10. 請問有沒有想提出的未來的期待與新增功能?"
+                ]
+            },
+            en: {
+                headline: "Smart Transformer<br><span class='text-indigo-600'>User Feedback</span>",
+                subline: "Help us optimize this tool by sharing your experience.",
+                startBtn: "Start",
+                prev: "Back",
+                next: "Next",
+                submit: "Submit",
+                submitting: "Submitting...",
+                successTitle: "Thank You!",
+                successBody: "Your feedback matters.",
+                restart: "Restart",
+                q_text: "Any comments?",
+                donate_placeholder: "Donate amount",
+                difficult: "Bad",
+                perfect: "Perfect",
+                questions: [
+                    "1. Was the installation smooth?",
+                    "2. Did the file open smoothly first time?",
+                    "3. Was the API set up easy following the guide?",
+                    "4. Was adding Prompts easy following the guide?",
+                    "5. Was the F9 function easy to operate?",
+                    "6. Does the program feel intuitive to use?",
+                    "7. Do you like the interface aesthetic?",
+                    "8. Did you enable 'Run on Startup'?",
+                    "9. How much would you pay for this tool?",
+                    "10. Any future features you expect?"
+                ]
+            },
+            jp: {
+                headline: "Smart Transformer<br><span class='text-indigo-600'>ユーザーフィードバック</span>",
+                subline: "開発の最適化のために、ご意見をお聞かせください。",
+                startBtn: "開始する",
+                prev: "前へ",
+                next: "次へ",
+                submit: "送信",
+                submitting: "送信中...",
+                successTitle: "ご協力感謝します！",
+                successBody: "貴重なご意見ありがとうございます。",
+                restart: "再入力",
+                q_text: "メッセージ",
+                donate_placeholder: "寄付金額",
+                difficult: "困難",
+                perfect: "完璧",
+                questions: [
+                    "1. インストールはスムーズでしたか？",
+                    "2. 初めてファイルを開く際、スムーズでしたか？",
+                    "3. 説明通りにAPI設定はできましたか？",
+                    "4. 説明通りに新機能の追加はできましたか？",
+                    "5. 説明通りにF9操作はできましたか？",
+                    "6. 操作は直感的だと感じましたか？",
+                    "7. インターフェースのデザインは好みですか？",
+                    "8. 自動起動を設定しましたか？",
+                    "9. このツールにいくら支払ってもいいと思いますか？",
+                    "10. 今後追加してほしい機能はありますか？"
+                ]
+            }
+        };
+
+        let currentLang = 'zh';
+        let currentStep = 0;
+        let answers = {};
+        let startTime = 0;
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.toLowerCase() === lang);
+            });
+            updateUIStrings();
+            if (document.getElementById('page-survey').style.display !== 'none') {
+                renderStep();
+            }
+        }
+
+        function updateUIStrings() {
+            const t = i18n[currentLang];
+            document.querySelector('.t-headline').innerHTML = t.headline;
+            document.querySelector('.t-subline').innerText = t.subline;
+            document.querySelector('.t-start-btn').innerText = t.startBtn;
+            document.querySelector('.t-prev').innerText = t.prev;
+            document.querySelector('.t-next').innerText = t.next;
+            document.querySelector('.t-submitting').innerText = t.submitting;
+            document.querySelector('.t-success-title').innerText = t.successTitle;
+            document.querySelector('.t-success-body').innerText = t.successBody;
+            document.querySelector('.t-restart').innerText = t.restart;
+        }
+
+        function changePage(pageId) {
+            document.querySelectorAll('#survey-app > div:not(.absolute)').forEach(div => div.classList.add('hidden'));
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+            if (pageId === 'survey') {
+                startTime = Date.now();
+                renderStep();
+            }
+        }
+
+        function getKeyName(stepIndex) {
+            const map = {
+                1: "1_安裝補充",
+                2: "2_開啟補充",
+                3: "3_API補充",
+                4: "4_Prompt補充",
+                5: "5_F9補充",
+                6: "6_直覺補充",
+                7: "7_審美補充"
+            };
+            return map[stepIndex];
+        }
+
+        function renderStep() {
+            const qIndex = currentStep;
+            const t = i18n[currentLang];
+            const title = t.questions[qIndex];
+            const container = document.getElementById('question-container');
+
+            document.getElementById('progress-text').innerText = `STEP ${currentStep + 1} / 10`;
+            document.getElementById('progress-bar').style.width = `${((currentStep + 1) / 10) * 100}%`;
+            document.getElementById('btn-prev').classList.toggle('hidden', currentStep === 0);
+            document.getElementById('btn-next').innerText = (currentStep === 9) ? t.submit : t.next;
+
+            let html = `<h2 class="text-xl font-bold text-slate-800 mb-6 leading-tight">${title}</h2>`;
+
+            if (currentStep < 7) {
+                // Scale questions
+                const stepNum = currentStep + 1;
+                const val = answers[`${stepNum}_順利`] || 8;
+                const textKey = getKeyName(stepNum);
+                html += `
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center px-2">
+                            <span class="text-slate-400 font-bold">${t.difficult}</span>
+                            <span class="text-5xl font-black text-indigo-600 tracking-tighter">${val}</span>
+                            <span class="text-indigo-500 font-bold">${t.perfect}</span>
+                        </div>
+                        <input type="range" min="1" max="10" value="${val}" class="slider" 
+                               oninput="updateValue(${stepNum}, this.value)">
+                        <textarea class="form-textarea mt-4" placeholder="${t.q_text}" 
+                                  oninput="updateText(${stepNum}, this.value)">${answers[textKey] || ''}</textarea>
+                    </div>
+                `;
+            } else if (currentStep === 7) {
+                // YES/NO
+                const selected = answers[`8_開機自動執行`] || "";
+                html += `
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="updateAnswer('8_開機自動執行', 'YES'); renderStep()" 
+                                    class="p-4 rounded-xl border-2 font-bold text-lg transition-all ${selected === 'YES' ? 'border-indigo-600 bg-indigo-50 text-indigo-600' : 'border-slate-100 hover:border-indigo-200'}">YES</button>
+                            <button onclick="updateAnswer('8_開機自動執行', 'NO'); renderStep()" 
+                                    class="p-4 rounded-xl border-2 font-bold text-lg transition-all ${selected === 'NO' ? 'border-indigo-600 bg-indigo-50 text-indigo-600' : 'border-slate-100 hover:border-indigo-200'}">NO</button>
+                        </div>
+                        <textarea class="form-textarea mt-4" placeholder="${t.q_text}" 
+                                  oninput="updateAnswer('8_開機補充', this.value)">${answers[`8_開機補充`] || ''}</textarea>
+                    </div>
+                `;
+            } else {
+                // Open text questions
+                const qId = currentStep + 1;
+                const fieldName = (qId === 9) ? "9_願意支付金額" : "10_未來期待與功能";
+                html += `
+                    <textarea class="form-textarea h-48" placeholder="${qId === 9 ? t.donate_placeholder : t.q_text}" 
+                              oninput="updateAnswer('${fieldName}', this.value)">${answers[fieldName] || ''}</textarea>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function updateValue(id, val) {
+            answers[`${id}_順利`] = val;
+            document.querySelector('.text-5xl').innerText = val;
+        }
+
+        function updateText(id, val) {
+            const key = getKeyName(id);
+            answers[key] = val;
+        }
+
+        function updateAnswer(key, val) {
+            answers[key] = val;
+        }
+
+        function nextStep() {
+            if (currentStep < 9) {
+                currentStep++;
+                renderStep();
+            } else {
+                submitSurvey();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                renderStep();
+            }
+        }
+
+        function submitSurvey() {
+            changePage('submitting');
+            const endTime = Date.now();
+            answers['secondsSpent'] = Math.floor((endTime - startTime) / 1000);
+
+            // 確保所有預設值存在
+            for (let i = 1; i <= 7; i++) {
+                if (!answers[`${i}_順利`]) answers[`${i}_順利`] = "8";
+                if (!answers[`${i}_補充`]) answers[`${i}_補充`] = "";
+            }
+
+            fetch(GAS_URL, {
+                method: "POST",
+                mode: "no-cors",
+                body: JSON.stringify(answers)
+            }).then(() => {
+                changePage('success');
+            }).catch(() => {
+                alert("Submit Error");
+                changePage('survey');
+            });
+        }
+
+        // Init strings
+        updateUIStrings();
+    </script>
+</body>
+
+</html>

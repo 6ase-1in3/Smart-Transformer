@@ -1,0 +1,11 @@
+# Ignore EVERYTHING by default
+*
+
+# Allow directories (so we can find allow-listed files inside them if needed, though we seem to only have root files)
+!*/
+
+# Allow specific files
+!README.md
+!SmartTransformer_Survey.html
+!SmartTransformer_Installer_v7.5.exe
+!.gitignore
