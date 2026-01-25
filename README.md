@@ -4,7 +4,7 @@ Smart Transformer brings the power of Google Gemini AI directly to your desktop 
 
 ## 📥 Download
 
-**2026.01.25**： v1.3   [**Download Installer**](https://github.com/6ase-1in3/Smart-Transformer/raw/main/SmartTransformer_Installer_v1.3.exe)
+**2026.01.25**：[**Download Installer v1.3   **](https://github.com/6ase-1in3/Smart-Transformer/raw/main/SmartTransformer_Installer_v1.3.exe)
 
 ## 🚀 Key Features
 
