@@ -4,8 +4,13 @@ Smart Transformer brings the power of Google Gemini AI directly to your desktop 
 
 ## 📥 Download
 
-> [![Release Date](https://img.shields.io/badge/Release_Date-2026.01.26-607D8B?style=for-the-badge&logo=calendar&logoColor=white)](https://github.com/6ase-1in3/Smart-Transformer/releases) [![Version](https://img.shields.io/badge/Version-v1.3-purple?style=for-the-badge&logo=git&logoColor=white)](https://github.com/6ase-1in3/Smart-Transformer/releases) [![Download](https://img.shields.io/badge/Download-Installer_(22MB)-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/6ase-1in3/Smart-Transformer/raw/main/SmartTransformer_Installer_v1.3.exe) [![VirusTotal](https://img.shields.io/badge/VirusTotal-1%2F54_Clean-brightgreen?style=for-the-badge&logo=virustotal&logoColor=white)](https://www.virustotal.com/gui/file/263d3cbc0c9bf2b50249ac665afdbf946cc800141f9e1a14047bc20923468ed4/detection)
->
+<p align="center">
+  <a href="https://github.com/6ase-1in3/Smart-Transformer/releases"><img src="https://img.shields.io/badge/Release_Date-2026.01.26-607D8B?style=for-the-badge&logo=calendar&logoColor=white" alt="Release Date"></a>
+  <a href="https://github.com/6ase-1in3/Smart-Transformer/releases"><img src="https://img.shields.io/badge/Version-v1.3-purple?style=for-the-badge&logo=git&logoColor=white" alt="Version"></a>
+  <a href="https://github.com/6ase-1in3/Smart-Transformer/raw/main/SmartTransformer_Installer_v1.3.exe"><img src="https://img.shields.io/badge/Download-Installer_(22MB)-0078D4?style=for-the-badge&logo=windows&logoColor=white" alt="Download"></a>
+  <a href="https://www.virustotal.com/gui/file/263d3cbc0c9bf2b50249ac665afdbf946cc800141f9e1a14047bc20923468ed4/detection"><img src="https://img.shields.io/badge/VirusTotal-1%2F54_Clean-brightgreen?style=for-the-badge&logo=virustotal&logoColor=white" alt="VirusTotal"></a>
+</p>
+
 > *⚠️ Note: The single "OffLoader" detection is a known generic flag for PyInstaller files.*
 
 ## 🚀 Key Features
