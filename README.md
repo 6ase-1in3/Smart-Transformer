@@ -4,9 +4,9 @@ Smart Transformer brings the power of Google Gemini AI directly to your desktop 
 
 ## 📥 Download
 
-| Version | Release Date | Installer | Security Report |
-| :---: | :---: | :---: | :---: |
-| **v1.3** | 2026.01.26 | [**SmartTransformer_Installer_v1.3.exe**](https://github.com/6ase-1in3/Smart-Transformer/raw/main/SmartTransformer_Installer_v1.3.exe) | [**🛡️ VirusTotal Clean**](https://www.virustotal.com/gui/file/263d3cbc0c9bf2b50249ac665afdbf946cc800141f9e1a14047bc20923468ed4/detection) |
+| Version | Release Date | Download | Security Report |
+| :---: | :---: | :--- | :---: |
+| **v1.3** | 2026.01.26 | 📦 [**Installer**](https://github.com/6ase-1in3/Smart-Transformer/raw/main/SmartTransformer_Installer_v1.3.exe) (25MB)<br>🎒 [**Portable**](https://github.com/6ase-1in3/Smart-Transformer/raw/main/SmartTransformer_Portable_v1.3.exe) (23MB) | [**🛡️ VirusTotal Clean**](https://www.virustotal.com/gui/file/263d3cbc0c9bf2b50249ac665afdbf946cc800141f9e1a14047bc20923468ed4/detection) |
 
 > *Note: The single "OffLoader" detection is a known false positive for PyInstaller applications.*
 
